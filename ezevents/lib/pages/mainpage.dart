@@ -12,6 +12,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.sizeOf(context).width;
+    double screenHeight = MediaQuery.sizeOf(context).height;
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
@@ -29,7 +32,7 @@ class _MainPageState extends State<MainPage> {
               // NOTIFICATIONS
               Container(
                 padding: const EdgeInsets.all(12),
-                height: 200,
+                height: screenHeight * .15,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondaryContainer,
                   borderRadius: BorderRadius.circular(10),
@@ -59,6 +62,11 @@ class _MainPageState extends State<MainPage> {
 
               // DASHBOARD
               Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -69,7 +77,7 @@ class _MainPageState extends State<MainPage> {
                     !isEvents
                         ? Text("Send events for approval to see them here!")
                         : Container(
-                            height: 300,
+                            height: screenHeight * .40,
                             child: ListView.builder(
                               itemCount: 10,
                               shrinkWrap: true,
@@ -78,6 +86,47 @@ class _MainPageState extends State<MainPage> {
                             ),
                           )
                   ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // BUTTONS
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.green),
+                  child: Text(
+                    "View Venues",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 5),
+
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.brown),
+                  child: Text(
+                    "Register New Event",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               )
             ],

@@ -2,6 +2,7 @@ import 'package:ezevents/pages/loginpage.dart';
 import 'package:ezevents/pages/venue_booking.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ezevents/pages/event_proposal.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -143,7 +144,8 @@ class _MainPageState extends State<MainPage> {
               const SizedBox(height: 5),
 
               GestureDetector(
-                onTap: () {},
+                onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => EventProposal())),
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(

@@ -29,10 +29,15 @@ class _VenueListPageState extends State<VenueListPage> {
     Venue(name: 'Ambedkar Auditorium', isAvailable: false),
     Venue(name: 'Sarojini Naidu Gallery', isAvailable: true),
     Venue(name: 'Kamaraj Auditorium', isAvailable: true, unavailableDates: [DateTime(2025, 1, 27)]),
+    Venue(name: 'Channa Reddy Auditorium', isAvailable: true, unavailableDates: [DateTime(2025, 1, 24)]),
+    Venue(name: 'Anna Auditorium', isAvailable: false),
+    Venue(name: 'Homi Bhabha Gallery', isAvailable: true, unavailableDates: [DateTime(2025, 1, 26)]),
+    Venue(name: 'TT VOC Gallery', isAvailable: false)
   ];
 
   DateTime selectedDate = DateTime.now();
 
+  // Function to open date picker and let the user choose a date
   void _showDatePicker() async {
     DateTime? newDate = await showDatePicker(
       context: context,
@@ -48,6 +53,7 @@ class _VenueListPageState extends State<VenueListPage> {
     }
   }
 
+  // Function to show the booking request confirmation dialog
   void _sendBookingRequest(Venue venue) {
     showDialog(
       context: context,
@@ -74,22 +80,25 @@ class _VenueListPageState extends State<VenueListPage> {
       appBar: AppBar(title: Text('Available Venues')),
       body: Column(
         children: [
+          // Date picker section
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Selected Date: ${selectedDate.toLocal()}'.split(' ')[0],
+                  'Selected Date: ${selectedDate.toLocal()}'.split(' ')[0],  // Format the date
                   style: TextStyle(fontSize: 18),
                 ),
                 IconButton(
                   icon: Icon(Icons.calendar_today),
-                  onPressed: _showDatePicker,
+                  onPressed: _showDatePicker,  // Trigger date picker on tap
                 ),
               ],
             ),
           ),
+
+          // Venue List section
           Expanded(
             child: ListView.builder(
               itemCount: venues.length,

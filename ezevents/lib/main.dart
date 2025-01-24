@@ -1,5 +1,6 @@
 import 'package:ezevents/pages/loginpage.dart';
 import 'package:ezevents/pages/mainpage.dart';
+import 'package:ezevents/pages/venue_booking.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,7 +21,7 @@ class MainApp extends StatelessWidget {
             secondary: Color.fromRGBO(141, 129, 103, 1)),
         textTheme: GoogleFonts.montserratTextTheme().copyWith(),
       ),
-      home: LoginPage(),
+      home: VenueBooking(),
     );
   }
 }

@@ -107,7 +107,7 @@ class _MainPageState extends State<MainPage> {
                     !isEvents
                         ? Text("Send events for approval to see them here!")
                         : Container(
-                            height: screenHeight * .40,
+                            height: screenHeight * .35,
                             child: ListView.builder(
                               itemCount: 10,
                               shrinkWrap: true,
@@ -189,7 +189,7 @@ class EventTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              "Event Title: Event $index",
+              "Event Title:",
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(

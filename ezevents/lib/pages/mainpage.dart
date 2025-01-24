@@ -83,7 +83,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.sizeOf(context).width;
+    // double screenWidth = MediaQuery.sizeOf(context).width;
     double screenHeight = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
@@ -92,18 +92,18 @@ class _MainPageState extends State<MainPage> {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 15),
-            child: Icon(Icons.settings),
+            child: const Icon(Icons.settings),
           ),
           Container(
             margin: const EdgeInsets.only(right: 20),
             child: GestureDetector(
               onTap: logout,
-              child: Icon(Icons.logout),
+              child: const Icon(Icons.logout),
             ),
           ),
         ],
         toolbarHeight: 100,
-        title: Text(
+        title: const Text(
           "Welcome, User!",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),

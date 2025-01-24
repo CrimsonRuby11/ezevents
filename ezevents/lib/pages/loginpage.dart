@@ -133,6 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                 onTapOutside: (event) =>
                     FocusManager.instance.primaryFocus?.unfocus(),
                 decoration: InputDecoration(hintText: "Password"),
+                obscureText: true,
               ),
               const SizedBox(
                 height: 20,
@@ -204,6 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                 onTapOutside: (event) =>
                     FocusManager.instance.primaryFocus?.unfocus(),
                 decoration: InputDecoration(hintText: "Password"),
+                obscureText: true,
               ),
               const SizedBox(
                 height: 20,

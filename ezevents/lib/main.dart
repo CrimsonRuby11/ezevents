@@ -29,8 +29,11 @@ class MainApp extends StatelessWidget {
             secondary: Color.fromRGBO(141, 129, 103, 1)),
         textTheme: GoogleFonts.montserratTextTheme().copyWith(),
       ),
-      home:
-          FirebaseAuth.instance.currentUser != null ? MainPage() : LoginPage(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? MainPage(
+              uid: FirebaseAuth.instance.currentUser!.uid,
+            )
+          : LoginPage(),
     );
   }
 }

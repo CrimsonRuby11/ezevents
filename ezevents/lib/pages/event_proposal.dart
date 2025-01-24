@@ -129,7 +129,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
             // Club Name Input
             TextField(
@@ -139,7 +139,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
             // Event Description Input
             TextField(
@@ -150,7 +150,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
             // Date Picker
             Row(
@@ -167,7 +167,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
             // From Time Picker
             Row(
@@ -181,7 +181,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
             // To Time Picker
             Row(

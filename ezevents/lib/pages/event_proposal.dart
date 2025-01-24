@@ -1,19 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(EventProposal());
-}
-
-class EventProposal extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: EventProposalPage(),
-    );
-  }
-}
+import 'package:intl/intl.dart';
 
 class EventProposalPage extends StatefulWidget {
+  final String uid;
+
+  const EventProposalPage({super.key, required this.uid});
+
   @override
   _EventProposalPageState createState() => _EventProposalPageState();
 }
@@ -21,7 +14,8 @@ class EventProposalPage extends StatefulWidget {
 class _EventProposalPageState extends State<EventProposalPage> {
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _clubNameController = TextEditingController();
-  final TextEditingController _eventDescriptionController = TextEditingController();
+  final TextEditingController _eventDescriptionController =
+      TextEditingController();
 
   TimeOfDay? _fromTime;
   TimeOfDay? _toTime;
@@ -70,44 +64,71 @@ class _EventProposalPageState extends State<EventProposalPage> {
   }
 
   // Function to propose the event
-  void _proposeEvent() {
+  void _proposeEvent() async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Sending Event Proposal...")),
+    );
+
     final eventName = _eventNameController.text;
     final clubName = _clubNameController.text;
     final eventDescription = _eventDescriptionController.text;
 
     // Check if the required fields are filled
-    if (eventName.isEmpty || clubName.isEmpty || eventDescription.isEmpty || _fromTime == null || _toTime == null || selectedDate == null) {
+    if (eventName.isEmpty ||
+        clubName.isEmpty ||
+        eventDescription.isEmpty ||
+        _fromTime == null ||
+        _toTime == null ||
+        selectedDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Please fill out all fields!")),
       );
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Event Proposal Submitted'),
-            content: Text(
-                'Event: $eventName\nClub: $clubName\nDescription: $eventDescription\nDate: ${selectedDate?.toLocal().toString().split(' ')[0]}\nTime: ${_fromTime?.format(context)} - ${_toTime?.format(context)}'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  // Clear all fields
-                  _eventNameController.clear();
-                  _clubNameController.clear();
-                  _eventDescriptionController.clear();
-                  setState(() {
-                    _fromTime = null;
-                    _toTime = null;
-                    selectedDate = null;
-                  });
-                },
-              ),
-            ],
-          );
-        },
-      );
+      final firestore = FirebaseFirestore.instance;
+
+      try {
+        final result = await firestore.collection('events').add({
+          'eventName': eventName,
+          'clubName': clubName,
+          'eventDesc': eventDescription,
+          'date': DateFormat("dd/MM/yyyy").format(selectedDate!),
+          'fromTime': _fromTime!.hour.toString(),
+          'toTime': _toTime!.minute.toString(),
+          'uid': widget.uid,
+        });
+
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Event Proposal Submitted'),
+              content: Text(
+                  'Event: $eventName\nClub: $clubName\nDescription: $eventDescription\nDate: ${selectedDate?.toLocal().toString().split(' ')[0]}\nTime: ${_fromTime?.format(context)} - ${_toTime?.format(context)}'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // Clear all fields
+                    _eventNameController.clear();
+                    _clubNameController.clear();
+                    _eventDescriptionController.clear();
+                    setState(() {
+                      _fromTime = null;
+                      _toTime = null;
+                      selectedDate = null;
+                    });
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("An Error occured...")),
+        );
+      }
     }
   }
 
@@ -157,10 +178,9 @@ class _EventProposalPageState extends State<EventProposalPage> {
               children: <Widget>[
                 Expanded(
                   child: ListTile(
-                    title: Text(
-                        selectedDate == null
-                            ? 'Select Event Date'
-                            : 'Event Date: ${selectedDate!.toLocal().toString().split(' ')[0]}'),
+                    title: Text(selectedDate == null
+                        ? 'Select Event Date'
+                        : 'Event Date: ${selectedDate!.toLocal().toString().split(' ')[0]}'),
                     onTap: _showDatePicker,
                     trailing: Icon(Icons.calendar_today),
                   ),
@@ -174,7 +194,8 @@ class _EventProposalPageState extends State<EventProposalPage> {
               children: <Widget>[
                 Expanded(
                   child: ListTile(
-                    title: Text('From Time: ${_fromTime?.format(context) ?? 'Not selected'}'),
+                    title: Text(
+                        'From Time: ${_fromTime?.format(context) ?? 'Not selected'}'),
                     onTap: () => _selectFromTime(context),
                     trailing: Icon(Icons.access_time),
                   ),
@@ -188,7 +209,8 @@ class _EventProposalPageState extends State<EventProposalPage> {
               children: <Widget>[
                 Expanded(
                   child: ListTile(
-                    title: Text('To Time: ${_toTime?.format(context) ?? 'Not selected'}'),
+                    title: Text(
+                        'To Time: ${_toTime?.format(context) ?? 'Not selected'}'),
                     onTap: () => _selectToTime(context),
                     trailing: Icon(Icons.access_time),
                   ),

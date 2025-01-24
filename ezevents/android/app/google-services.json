@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "679378344423",
+    "project_id": "ez-events-4sgby3",
+    "storage_bucket": "ez-events-4sgby3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679378344423:android:89eb7c2c731701fba20542",
+        "android_client_info": {
+          "package_name": "com.example.ezevents"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOTxehvuHx3wADgMW23JKp79lHROghXME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

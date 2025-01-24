@@ -1,3 +1,6 @@
+import 'package:ezevents/pages/loginpage.dart';
+import 'package:ezevents/pages/venue_booking.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -10,6 +13,23 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   bool isEvents = true;
 
+  logout() async {
+    final firebaseAuth = FirebaseAuth.instance;
+
+    try {
+      await firebaseAuth.signOut();
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (route) => false,
+      );
+    } catch (e) {
+      debugPrint("$e");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error logging out!"),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.sizeOf(context).width;
@@ -17,6 +37,15 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 20),
+            child: GestureDetector(
+              onTap: logout,
+              child: Icon(Icons.logout),
+            ),
+          ),
+        ],
         toolbarHeight: 100,
         title: Text(
           "Welcome, User!",
@@ -93,7 +122,8 @@ class _MainPageState extends State<MainPage> {
 
               // BUTTONS
               GestureDetector(
-                onTap: () {},
+                onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => VenueBooking())),
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(

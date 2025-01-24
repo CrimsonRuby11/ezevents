@@ -7,12 +7,8 @@ void main() {
 class EventProposal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Event Proposal',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: EventProposalPage(),
+    return Scaffold(
+      body: EventProposalPage(),
     );
   }
 }
@@ -29,6 +25,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
 
   TimeOfDay? _fromTime;
   TimeOfDay? _toTime;
+  DateTime? selectedDate;
 
   // Function to show the time picker for the "From" time
   void _selectFromTime(BuildContext context) async {
@@ -56,6 +53,22 @@ class _EventProposalPageState extends State<EventProposalPage> {
     }
   }
 
+  // Function to show DatePicker for event date selection
+  void _showDatePicker() async {
+    DateTime? newDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2026),
+    );
+
+    if (newDate != null && newDate != selectedDate) {
+      setState(() {
+        selectedDate = newDate;
+      });
+    }
+  }
+
   // Function to propose the event
   void _proposeEvent() {
     final eventName = _eventNameController.text;
@@ -63,7 +76,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
     final eventDescription = _eventDescriptionController.text;
 
     // Check if the required fields are filled
-    if (eventName.isEmpty || clubName.isEmpty || eventDescription.isEmpty || _fromTime == null || _toTime == null) {
+    if (eventName.isEmpty || clubName.isEmpty || eventDescription.isEmpty || _fromTime == null || _toTime == null || selectedDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Please fill out all fields!")),
       );
@@ -74,7 +87,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
           return AlertDialog(
             title: Text('Event Proposal Submitted'),
             content: Text(
-                'Event: $eventName\nClub: $clubName\nDescription: $eventDescription\nTime: ${_fromTime?.format(context)} - ${_toTime?.format(context)}'),
+                'Event: $eventName\nClub: $clubName\nDescription: $eventDescription\nDate: ${selectedDate?.toLocal().toString().split(' ')[0]}\nTime: ${_fromTime?.format(context)} - ${_toTime?.format(context)}'),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),
@@ -87,6 +100,7 @@ class _EventProposalPageState extends State<EventProposalPage> {
                   setState(() {
                     _fromTime = null;
                     _toTime = null;
+                    selectedDate = null;
                   });
                 },
               ),
@@ -135,6 +149,23 @@ class _EventProposalPageState extends State<EventProposalPage> {
                 labelText: 'Event Description',
                 border: OutlineInputBorder(),
               ),
+            ),
+            SizedBox(height: 20),
+
+            // Date Picker
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: ListTile(
+                    title: Text(
+                        selectedDate == null
+                            ? 'Select Event Date'
+                            : 'Event Date: ${selectedDate!.toLocal().toString().split(' ')[0]}'),
+                    onTap: _showDatePicker,
+                    trailing: Icon(Icons.calendar_today),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 20),
 

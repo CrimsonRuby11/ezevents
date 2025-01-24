@@ -195,7 +195,7 @@ class EventTile extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Text("Date: Sunday 10/10/2025")
+            Text("Date: ", )
           ],
         ),
       ),

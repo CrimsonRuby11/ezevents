@@ -29,16 +29,21 @@ class _VenueListPageState extends State<VenueListPage> {
     Venue(name: 'Ambedkar Auditorium', isAvailable: false),
     Venue(name: 'Sarojini Naidu Gallery', isAvailable: true),
     Venue(name: 'Kamaraj Auditorium', isAvailable: true, unavailableDates: [DateTime(2025, 1, 27)]),
+    Venue(name: 'Channa Reddy Auditorium', isAvailable: true, unavailableDates: [DateTime(2025, 1, 24)]),
+    Venue(name: 'Anna Auditorium', isAvailable: false),
+    Venue(name: 'Homi Bhabha Gallery', isAvailable: true, unavailableDates: [DateTime(2025, 1, 26)]),
+    Venue(name: 'TT VOC Gallery', isAvailable: false)
   ];
 
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
+
 
   void _showDatePicker() async {
     DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2020),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(2026),
     );
 
     if (newDate != null && newDate != selectedDate) {
@@ -48,13 +53,14 @@ class _VenueListPageState extends State<VenueListPage> {
     }
   }
 
+  // Function to show the booking request confirmation dialog
   void _sendBookingRequest(Venue venue) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Booking Request'),
-          content: Text('You have sent a booking request for ${venue.name} on ${selectedDate.toLocal()}'),
+          content: Text('You have sent a booking request for ${venue.name} on ${selectedDate?.toLocal()}'),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -74,34 +80,37 @@ class _VenueListPageState extends State<VenueListPage> {
       appBar: AppBar(title: Text('Available Venues')),
       body: Column(
         children: [
+          // Date picker section
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Selected Date: ${selectedDate.toLocal()}'.split(' ')[0],
+                  'Selected Date: ${selectedDate?.toLocal().toString().split(' ')[0] ?? 'Not selected'}',  // Format the date
                   style: TextStyle(fontSize: 18),
                 ),
                 IconButton(
                   icon: Icon(Icons.calendar_today),
-                  onPressed: _showDatePicker,
+                  onPressed: _showDatePicker,  // Trigger date picker on tap
                 ),
               ],
             ),
           ),
+
+          // Venue List section
           Expanded(
             child: ListView.builder(
               itemCount: venues.length,
               itemBuilder: (context, index) {
                 final venue = venues[index];
-                final isAvailableOnSelectedDate = venue.checkAvailability(selectedDate);
+                final isAvailableOnSelectedDate = selectedDate != null && venue.checkAvailability(selectedDate!);
                 return ListTile(
                   title: Text(venue.name),
                   tileColor: isAvailableOnSelectedDate ? Colors.green : Colors.red,
                   subtitle: isAvailableOnSelectedDate
-                      ? Text('Available on ${selectedDate.toLocal()}')
-                      : Text('Not available on ${selectedDate.toLocal()}'),
+                      ? Text('Available on ${selectedDate?.toLocal()}')
+                      : Text('Not available on ${selectedDate?.toLocal()}'),
                   onTap: isAvailableOnSelectedDate
                       ? () => _sendBookingRequest(venue)
                       : null,
@@ -114,3 +123,4 @@ class _VenueListPageState extends State<VenueListPage> {
     );
   }
 }
+

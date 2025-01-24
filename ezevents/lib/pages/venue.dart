@@ -14,3 +14,4 @@ class Venue {
     return isAvailable && !unavailableDates.contains(date);
   }
 }
+

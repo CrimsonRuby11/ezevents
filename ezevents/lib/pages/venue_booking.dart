@@ -35,15 +35,15 @@ class _VenueListPageState extends State<VenueListPage> {
     Venue(name: 'TT VOC Gallery', isAvailable: false)
   ];
 
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
 
-  // Function to open date picker and let the user choose a date
+
   void _showDatePicker() async {
     DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2020),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(2026),
     );
 
     if (newDate != null && newDate != selectedDate) {
@@ -60,7 +60,7 @@ class _VenueListPageState extends State<VenueListPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Booking Request'),
-          content: Text('You have sent a booking request for ${venue.name} on ${selectedDate.toLocal()}'),
+          content: Text('You have sent a booking request for ${venue.name} on ${selectedDate?.toLocal()}'),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -87,7 +87,7 @@ class _VenueListPageState extends State<VenueListPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Selected Date: ${selectedDate.toLocal()}'.split(' ')[0],  // Format the date
+                  'Selected Date: ${selectedDate?.toLocal().toString().split(' ')[0] ?? 'Not selected'}',  // Format the date
                   style: TextStyle(fontSize: 18),
                 ),
                 IconButton(
@@ -104,13 +104,13 @@ class _VenueListPageState extends State<VenueListPage> {
               itemCount: venues.length,
               itemBuilder: (context, index) {
                 final venue = venues[index];
-                final isAvailableOnSelectedDate = venue.checkAvailability(selectedDate);
+                final isAvailableOnSelectedDate = selectedDate != null && venue.checkAvailability(selectedDate!);
                 return ListTile(
                   title: Text(venue.name),
                   tileColor: isAvailableOnSelectedDate ? Colors.green : Colors.red,
                   subtitle: isAvailableOnSelectedDate
-                      ? Text('Available on ${selectedDate.toLocal()}')
-                      : Text('Not available on ${selectedDate.toLocal()}'),
+                      ? Text('Available on ${selectedDate?.toLocal()}')
+                      : Text('Not available on ${selectedDate?.toLocal()}'),
                   onTap: isAvailableOnSelectedDate
                       ? () => _sendBookingRequest(venue)
                       : null,
@@ -123,3 +123,4 @@ class _VenueListPageState extends State<VenueListPage> {
     );
   }
 }
+

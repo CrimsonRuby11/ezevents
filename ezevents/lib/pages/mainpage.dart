@@ -78,7 +78,7 @@ class _MainPageState extends State<MainPage> {
                       height: 10,
                     ),
                     Text(
-                      "• Sarojini Naidu Hall is Under maintenance!",
+                      "• Sarojini Naidu Hall is under maintenance",
                       style: TextStyle(fontSize: 15),
                     )
                   ],

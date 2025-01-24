@@ -15,3 +15,5 @@ class EventProposal extends StatelessWidget {
     );
   }
 }
+
+class eventList

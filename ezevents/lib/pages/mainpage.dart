@@ -87,6 +87,7 @@ class _MainPageState extends State<MainPage> {
     double screenHeight = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
           Container(
